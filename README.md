@@ -19,5 +19,5 @@ cmake --build build
 You can new run the program with the following command:
 
 ```sh
-build/rasterizer/rasterizer
+build/bin/rasterizer
 ```
