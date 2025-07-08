@@ -1,4 +1,6 @@
 add_executable(rasterizer
+  src/color.c
+  src/image.c
   src/main.c
   src/window.c
 )
