@@ -46,32 +46,32 @@ bool window_is_close_button_pressed(void) {
   return glfwWindowShouldClose(window);
 }
 
-void window_draw_image(image_t* image) {
+void window_draw_canvas(canvas_t* canvas) {
   glClear(GL_COLOR_BUFFER_BIT);
 
   glTexImage2D(
     GL_TEXTURE_2D,
     0,
     GL_RGBA,
-    image->width,
-    image->height,
+    canvas->width,
+    canvas->height,
     0,
     GL_RGBA,
     GL_UNSIGNED_BYTE,
-    image->pixels);
+    canvas->pixels);
 
   glBegin(GL_TRIANGLES);
-  glTexCoord2f(0.0f, 1.0f);
+  glTexCoord2f(0.0f, 0.0f);
   glVertex2f(-1.0f, -1.0f);
-  glTexCoord2f(0.0f, 0.0f);
-  glVertex2f(-1.0f, 1.0f);
-  glTexCoord2f(1.0f, 1.0f);
-  glVertex2f(1.0f, -1.0f);
-  glTexCoord2f(0.0f, 0.0f);
+  glTexCoord2f(0.0f, 1.0f);
   glVertex2f(-1.0f, 1.0f);
   glTexCoord2f(1.0f, 0.0f);
-  glVertex2f(1.0f, 1.0f);
+  glVertex2f(1.0f, -1.0f);
+  glTexCoord2f(0.0f, 1.0f);
+  glVertex2f(-1.0f, 1.0f);
   glTexCoord2f(1.0f, 1.0f);
+  glVertex2f(1.0f, 1.0f);
+  glTexCoord2f(1.0f, 0.0f);
   glVertex2f(1.0f, -1.0f);
   glEnd();
 

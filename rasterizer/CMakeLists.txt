@@ -1,8 +1,10 @@
 add_executable(rasterizer
+  src/canvas.c
   src/color.c
   src/image.c
-  src/main.c
   src/linear_algebra.c
+  src/main.c
+  src/renderer.c
   src/window.c
 )
 
