@@ -13,3 +13,6 @@ void image_destroy(image_t* image);
 
 void image_set_pixel(image_t* image, int x, int y, color_t color);
 color_t image_get_pixel(image_t* image, int x, int y);
+
+image_t image_read(const char* path);
+void image_write(image_t* image, const char* path);
