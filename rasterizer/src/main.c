@@ -20,13 +20,11 @@ int main(void) {
   canvas_t canvas = canvas_create(CANVAS_WIDTH, CANVAS_HEIGHT);
   canvas_clear(&canvas, COLOR_WHITE);
 
-  point2i_t p0 = { .x = -200, .y = -100 };
-  point2i_t p1 = { .x = 240, .y = 120 };
-  point2i_t p2 = { .x = -50, .y = -200 };
-  point2i_t p3 = { .x = 60, .y = 240 };
+  point2i_t p0 = { .x = -200, .y = -250 };
+  point2i_t p1 = { .x = 200, .y = 50 };
+  point2i_t p2 = { .x = 20, .y = 250 };
 
-  draw_line(&canvas, p0, p1);
-  draw_line(&canvas, p2, p3);
+  draw_wireframe_triangle(&canvas, p0, p1, p2, COLOR_BLACK);
 
   while (!window_is_close_button_pressed()) {
     window_draw_canvas(&canvas);
