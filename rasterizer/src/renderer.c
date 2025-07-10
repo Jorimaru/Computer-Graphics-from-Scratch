@@ -15,6 +15,12 @@ static void point2i_swap(point2i_t* p0, point2i_t* p1) {
   *p1 = pt;
 }
 
+static void vertex2_swap(vertex2_t* v0, vertex2_t* v1) {
+  vertex2_t vt = *v0;
+  *v0 = *v1;
+  *v1 = vt;
+}
+
 static void interpolate(int i0, int d0, int i1, int d1, int* result) {
   if (i0 == i1) {
     result[0] = d0;
@@ -65,28 +71,33 @@ void draw_wireframe_triangle(canvas_t* canvas,
   draw_line(canvas, p2, p0, color);
 }
 
-void draw_filled_triangle(canvas_t* canvas,
-                          point2i_t p0,
-                          point2i_t p1,
-                          point2i_t p2,
+void draw_shaded_triangle(canvas_t* canvas,
+                          vertex2_t v0,
+                          vertex2_t v1,
+                          vertex2_t v2,
                           color_t color) {
   // Sort the point from lowest y values to highest.
-  if (p0.y > p1.y) {
-    point2i_swap(&p0, &p1);
+  if (v0.pos.y > v1.pos.y) {
+    vertex2_swap(&v0, &v1);
   }
-  if (p1.y > p2.y) {
-    point2i_swap(&p1, &p2);
+  if (v1.pos.y > v2.pos.y) {
+    vertex2_swap(&v1, &v2);
   }
-  if (p0.y > p1.y) {
-    point2i_swap(&p0, &p1);
+  if (v0.pos.y > v1.pos.y) {
+    vertex2_swap(&v0, &v1);
   }
 
-  int num_values = p2.y - p0.y;
+  int num_values = v2.pos.y - v0.pos.y;
   int* values = (int*)malloc(sizeof(int) * num_values * 2);
 
-  interpolate(p0.y, p0.x, p2.y, p2.x, values);
-  interpolate(p0.y, p0.x, p1.y, p1.x, values + num_values);
-  interpolate(p1.y, p1.x, p2.y, p2.x, values + num_values + (p1.y - p0.y - 1));
+  interpolate(v0.pos.y, v0.pos.x, v2.pos.y, v2.pos.x, values);
+  interpolate(v0.pos.y, v0.pos.x, v1.pos.y, v1.pos.x, values + num_values);
+  interpolate(
+    v1.pos.y,
+    v1.pos.x,
+    v2.pos.y,
+    v2.pos.x,
+    values + num_values + (v1.pos.y - v0.pos.y - 1));
 
   int* values_left;
   int* values_right;
@@ -101,7 +112,7 @@ void draw_filled_triangle(canvas_t* canvas,
 
   for (int i = 0; i < num_values; i++) {
     for (int x = values_left[i]; x <= values_right[i]; x++) {
-      canvas_set_pixel(canvas, x, p0.y + i, color);
+      canvas_set_pixel(canvas, x, v0.pos.y + i, color);
     }
   }
 

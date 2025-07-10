@@ -20,14 +20,14 @@ int main(void) {
   canvas_t canvas = canvas_create(CANVAS_WIDTH, CANVAS_HEIGHT);
   canvas_clear(&canvas, COLOR_WHITE);
 
-  point2i_t p0 = { .x = -200, .y = -250 };
-  point2i_t p1 = { .x = 200, .y = 50 };
-  point2i_t p2 = { .x = 20, .y = 250 };
+  vertex2_t v0 = { .pos = { .x = -200, .y = -250 }, .h = 0.5f };
+  vertex2_t v1 = { .pos = { .x = 200, .y = 50 }, .h = 0.0f };
+  vertex2_t v2 = { .pos = { .x = 20, .y = 250 }, .h = 1.0f };
 
   color_t green = { .r = 0, .g = 255, .b = 0, .a = 255 };
 
-  draw_filled_triangle(&canvas, p0, p1, p2, green);
-  draw_wireframe_triangle(&canvas, p0, p1, p2, COLOR_BLACK);
+  draw_shaded_triangle(&canvas, v0, v1, v2, green);
+  draw_wireframe_triangle(&canvas, v0.pos, v1.pos, v2.pos, COLOR_BLACK);
 
   while (!window_is_close_button_pressed()) {
     window_draw_canvas(&canvas);
