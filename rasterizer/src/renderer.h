@@ -10,3 +10,8 @@ void draw_wireframe_triangle(canvas_t* canvas,
                              point2i_t p1,
                              point2i_t p2,
                              color_t color);
+void draw_filled_triangle(canvas_t* canvas,
+                          point2i_t p0,
+                          point2i_t p1,
+                          point2i_t p2,
+                          color_t color);

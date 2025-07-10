@@ -24,6 +24,9 @@ int main(void) {
   point2i_t p1 = { .x = 200, .y = 50 };
   point2i_t p2 = { .x = 20, .y = 250 };
 
+  color_t green = { .r = 0, .g = 255, .b = 0, .a = 255 };
+
+  draw_filled_triangle(&canvas, p0, p1, p2, green);
   draw_wireframe_triangle(&canvas, p0, p1, p2, COLOR_BLACK);
 
   while (!window_is_close_button_pressed()) {
