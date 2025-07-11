@@ -1,4 +1,5 @@
 add_executable(rasterizer
+  src/camera.c
   src/canvas.c
   src/color.c
   src/image.c
