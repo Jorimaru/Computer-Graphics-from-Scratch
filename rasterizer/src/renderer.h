@@ -4,6 +4,7 @@
 #include "canvas.h"
 #include "color.h"
 #include "linear_algebra.h"
+#include "model.h"
 
 typedef struct vertex2 {
   point2i_t pos;
@@ -21,11 +22,6 @@ void draw_shaded_triangle(canvas_t* canvas,
                           vertex2_t v1,
                           vertex2_t v2,
                           color_t color);
-
-typedef struct triangle {
-  int indices[3];
-  color_t color;
-} triangle_t;
 
 void render_object(canvas_t* canvas,
                    camera_t* camera,

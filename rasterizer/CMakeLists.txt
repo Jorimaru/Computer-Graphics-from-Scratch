@@ -6,6 +6,8 @@ add_executable(rasterizer
   src/linear_algebra.c
   src/main.c
   src/renderer.c
+  src/scene.c
+  src/transform.c
   src/window.c
 )
 

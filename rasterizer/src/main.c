@@ -1,10 +1,13 @@
 #include <stdio.h>
 
+#include <math.h>
+
 #include "camera.h"
 #include "canvas.h"
 #include "image.h"
 #include "linear_algebra.h"
-#include "renderer.h"
+#include "model.h"
+#include "scene.h"
 #include "window.h"
 
 #define WINDOW_WIDTH 1280
@@ -23,21 +26,15 @@ int main(void) {
   canvas_t canvas = canvas_create(CANVAS_WIDTH, CANVAS_HEIGHT);
   canvas_clear(&canvas, COLOR_WHITE);
 
-  camera_t camera = {
-    .width = VIEWPORT_WIDTH,
-    .height = VIEWPORT_HEIGHT,
-    .d = 1.0f,
-  };
-
   point3f_t vertices[8] = {
-    { .x = -2.0f, .y = -0.5f, .z = 5.0f }, // front bottom left
-    { .x = -1.0f, .y = -0.5f, .z = 5.0f }, // front bottom right
-    { .x = -2.0f, .y = 0.5f, .z = 5.0f }, // front top left
-    { .x = -1.0f, .y = 0.5f, .z = 5.0f }, // front top right
-    { .x = -2.0f, .y = -0.5f, .z = 6.0f }, // back bottom left
-    { .x = -1.0f, .y = -0.5f, .z = 6.0f }, // back bottom right
-    { .x = -2.0f, .y = 0.5f, .z = 6.0f }, // back top left
-    { .x = -1.0f, .y = 0.5f, .z = 6.0f }, // back top right
+    { .x = -0.5f, .y = -0.5f, .z = -0.5f }, // front bottom left
+    { .x = 0.5f, .y = -0.5f, .z = -0.5f }, // front bottom right
+    { .x = -0.5f, .y = 0.5f, .z = -0.5f }, // front top left
+    { .x = 0.5f, .y = 0.5f, .z = -0.5f }, // front top right
+    { .x = -0.5f, .y = -0.5f, .z = 0.5f }, // back bottom left
+    { .x = 0.5f, .y = -0.5f, .z = 0.5f }, // back bottom right
+    { .x = -0.5f, .y = 0.5f, .z = 0.5f }, // back top left
+    { .x = 0.5f, .y = 0.5f, .z = 0.5f }, // back top right
   };
 
   triangle_t triangles[12] = {
@@ -55,9 +52,38 @@ int main(void) {
     { .indices = { 3, 7, 6 }, .color = COLOR_CYAN },
   };
 
-  render_object(&canvas, &camera, vertices, 8, triangles, 12);
+  model_t model = {
+    .vertices = vertices,
+    .triangles = triangles,
+    .num_vertices = 8,
+    .num_triangles = 12,
+  };
+
+  instance_t instance = {
+    .model = &model,
+    .transform = {
+      .translation = { .x = 0.0f, .y = 0.0f, .z = 5.5f },
+      .rotation = { .x = 0.0f, .y = 0.0f, .z = 0.0f },
+      .scale = { .x = 1.0f, .y = 1.0f, .z = 1.0f },
+    },
+  };
+
+  scene_t scene = {
+    .camera = {
+      .width = VIEWPORT_WIDTH,
+      .height = VIEWPORT_HEIGHT,
+      .d = 1.0f,
+    },
+    .instances = &instance,
+    .num_instances = 1,
+  };
 
   while (!window_is_close_button_pressed()) {
+    canvas_clear(&canvas, COLOR_WHITE);
+    instance.transform.rotation.y += 0.01f;
+    instance.transform.rotation.x += 0.02f;
+    instance.transform.translation.x = sinf(instance.transform.rotation.y) * 2;
+    render_scene(&canvas, &scene);
     window_draw_canvas(&canvas);
   }
 
