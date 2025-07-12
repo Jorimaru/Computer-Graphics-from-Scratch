@@ -146,3 +146,31 @@ void draw_shaded_triangle(canvas_t* canvas,
   free(line_hs);
   free(xs);
 }
+
+void render_object(canvas_t* canvas,
+                   camera_t* camera,
+                   point3f_t* vertices,
+                   int num_vertices,
+                   triangle_t* triangles,
+                   int num_triangles) {
+  point2i_t* projected_vertices =
+    (point2i_t*)malloc(sizeof(point2i_t) * num_vertices);
+  for (int i = 0; i < num_vertices; i++) {
+    projected_vertices[i] = project_vertex(camera, canvas, vertices[i]);
+  }
+  for (int i = 0; i < num_triangles; i++) {
+    render_triangle(canvas, &triangles[i], projected_vertices);
+  }
+  free(projected_vertices);
+}
+
+void render_triangle(canvas_t* canvas,
+                     triangle_t* triangle,
+                     point2i_t* projected_vertices) {
+  draw_wireframe_triangle(
+    canvas,
+    projected_vertices[triangle->indices[0]],
+    projected_vertices[triangle->indices[1]],
+    projected_vertices[triangle->indices[2]],
+    triangle->color);
+}

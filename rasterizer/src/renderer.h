@@ -1,5 +1,6 @@
 #pragma once
 
+#include "camera.h"
 #include "canvas.h"
 #include "color.h"
 #include "linear_algebra.h"
@@ -20,3 +21,18 @@ void draw_shaded_triangle(canvas_t* canvas,
                           vertex2_t v1,
                           vertex2_t v2,
                           color_t color);
+
+typedef struct triangle {
+  int indices[3];
+  color_t color;
+} triangle_t;
+
+void render_object(canvas_t* canvas,
+                   camera_t* camera,
+                   point3f_t* vertices,
+                   int num_vertices,
+                   triangle_t* triangles,
+                   int num_triangles);
+void render_triangle(canvas_t* canvas,
+                     triangle_t* triangle,
+                     point2i_t* projected_vertices);

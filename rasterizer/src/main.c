@@ -29,30 +29,33 @@ int main(void) {
     .d = 1.0f,
   };
 
-  point3f_t ftl = { .x = -2.0f, .y = -0.5f, .z = 5.0f };
-  point3f_t ftr = { .x = -1.0f, .y = -0.5f, .z = 5.0f };
-  point3f_t fbl = { .x = -2.0f, .y = 0.5f, .z = 5.0f };
-  point3f_t fbr = { .x = -1.0f, .y = 0.5f, .z = 5.0f };
+  point3f_t vertices[8] = {
+    { .x = -2.0f, .y = -0.5f, .z = 5.0f }, // front bottom left
+    { .x = -1.0f, .y = -0.5f, .z = 5.0f }, // front bottom right
+    { .x = -2.0f, .y = 0.5f, .z = 5.0f }, // front top left
+    { .x = -1.0f, .y = 0.5f, .z = 5.0f }, // front top right
+    { .x = -2.0f, .y = -0.5f, .z = 6.0f }, // back bottom left
+    { .x = -1.0f, .y = -0.5f, .z = 6.0f }, // back bottom right
+    { .x = -2.0f, .y = 0.5f, .z = 6.0f }, // back top left
+    { .x = -1.0f, .y = 0.5f, .z = 6.0f }, // back top right
+  };
 
-  point3f_t btl = { .x = -2.0f, .y = -0.5f, .z = 6.0f };
-  point3f_t btr = { .x = -1.0f, .y = -0.5f, .z = 6.0f };
-  point3f_t bbl = { .x = -2.0f, .y = 0.5f, .z = 6.0f };
-  point3f_t bbr = { .x = -1.0f, .y = 0.5f, .z = 6.0f };
+  triangle_t triangles[12] = {
+    { .indices = { 0, 1, 2 }, .color = COLOR_RED },
+    { .indices = { 1, 3, 2 }, .color = COLOR_RED },
+    { .indices = { 1, 5, 3 }, .color = COLOR_GREEN },
+    { .indices = { 5, 7, 3 }, .color = COLOR_GREEN },
+    { .indices = { 5, 4, 7 }, .color = COLOR_BLUE },
+    { .indices = { 4, 6, 7 }, .color = COLOR_BLUE },
+    { .indices = { 4, 0, 6 }, .color = COLOR_YELLOW },
+    { .indices = { 0, 2, 6 }, .color = COLOR_YELLOW },
+    { .indices = { 4, 5, 0 }, .color = COLOR_MAGENTA },
+    { .indices = { 5, 1, 0 }, .color = COLOR_MAGENTA },
+    { .indices = { 2, 3, 6 }, .color = COLOR_CYAN },
+    { .indices = { 3, 7, 6 }, .color = COLOR_CYAN },
+  };
 
-  draw_line(&canvas, project_vertex(&camera, &canvas, ftl), project_vertex(&camera, &canvas, ftr), COLOR_BLUE);
-  draw_line(&canvas, project_vertex(&camera, &canvas, ftl), project_vertex(&camera, &canvas, fbl), COLOR_BLUE);
-  draw_line(&canvas, project_vertex(&camera, &canvas, ftr), project_vertex(&camera, &canvas, fbr), COLOR_BLUE);
-  draw_line(&canvas, project_vertex(&camera, &canvas, fbl), project_vertex(&camera, &canvas, fbr), COLOR_BLUE);
-
-  draw_line(&canvas, project_vertex(&camera, &canvas, btl), project_vertex(&camera, &canvas, btr), COLOR_RED);
-  draw_line(&canvas, project_vertex(&camera, &canvas, btl), project_vertex(&camera, &canvas, bbl), COLOR_RED);
-  draw_line(&canvas, project_vertex(&camera, &canvas, btr), project_vertex(&camera, &canvas, bbr), COLOR_RED);
-  draw_line(&canvas, project_vertex(&camera, &canvas, bbl), project_vertex(&camera, &canvas, bbr), COLOR_RED);
-
-  draw_line(&canvas, project_vertex(&camera, &canvas, ftl), project_vertex(&camera, &canvas, btl), COLOR_GREEN);
-  draw_line(&canvas, project_vertex(&camera, &canvas, ftr), project_vertex(&camera, &canvas, btr), COLOR_GREEN);
-  draw_line(&canvas, project_vertex(&camera, &canvas, fbl), project_vertex(&camera, &canvas, bbl), COLOR_GREEN);
-  draw_line(&canvas, project_vertex(&camera, &canvas, fbr), project_vertex(&camera, &canvas, bbr), COLOR_GREEN);
+  render_object(&canvas, &camera, vertices, 8, triangles, 12);
 
   while (!window_is_close_button_pressed()) {
     window_draw_canvas(&canvas);

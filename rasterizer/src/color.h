@@ -13,6 +13,9 @@ static const color_t COLOR_BLACK = { .r = 0, .g = 0, .b = 0, .a = 255 };
 static const color_t COLOR_RED = { .r = 255, .g = 0, .b = 0, .a = 255 };
 static const color_t COLOR_GREEN = { .r = 0, .g = 255, .b = 0, .a = 255 };
 static const color_t COLOR_BLUE = { .r = 0, .g = 0, .b = 255, .a = 255 };
+static const color_t COLOR_YELLOW = { .r = 255, .g = 255, .b = 0, .a = 255 };
+static const color_t COLOR_MAGENTA = { .r = 255, .g = 0, .b = 255, .a = 255 };
+static const color_t COLOR_CYAN = { .r = 0, .g = 255, .b = 255, .a = 255 };
 static const color_t COLOR_WHITE = { .r = 255, .g = 255, .b = 255, .a = 255 };
 
 color_t color_scale(color_t color, float scale);
