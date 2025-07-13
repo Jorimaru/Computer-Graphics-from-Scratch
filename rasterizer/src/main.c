@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "canvas.h"
 #include "image.h"
+#include "input.h"
 #include "linear_algebra.h"
 #include "model.h"
 #include "scene.h"
@@ -15,8 +16,11 @@
 #define WINDOW_SCALE 1
 #define CANVAS_WIDTH (WINDOW_WIDTH / WINDOW_SCALE)
 #define CANVAS_HEIGHT (WINDOW_HEIGHT / WINDOW_SCALE)
-#define VIEWPORT_WIDTH (VIEWPORT_HEIGHT * ((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT))
+#define VIEWPORT_WIDTH \
+  (VIEWPORT_HEIGHT * ((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT))
 #define VIEWPORT_HEIGHT 1.0f
+#define CAMERA_ROTATE_SPEED 0.001f
+#define CAMERA_MOVE_SPEED 0.1f
 
 #define array_length(a) (sizeof(a) / sizeof(a[0]))
 
@@ -94,6 +98,31 @@ int main(void) {
   };
 
   while (!window_is_close_button_pressed()) {
+    camera_rotate(
+      &scene.camera,
+      rotate_vertically() * CAMERA_ROTATE_SPEED,
+      rotate_horizontally() * CAMERA_ROTATE_SPEED,
+      0.0f);
+
+    if (move_up()) {
+      camera_move_up(&scene.camera, CAMERA_MOVE_SPEED);
+    }
+    if (move_down()) {
+      camera_move_up(&scene.camera, -CAMERA_MOVE_SPEED);
+    }
+    if (move_right()) {
+      camera_move_right(&scene.camera, CAMERA_MOVE_SPEED);
+    }
+    if (move_left()) {
+      camera_move_right(&scene.camera, -CAMERA_MOVE_SPEED);
+    }
+    if (move_forward()) {
+      camera_move_forward(&scene.camera, CAMERA_MOVE_SPEED);
+    }
+    if (move_backward()) {
+      camera_move_forward(&scene.camera, -CAMERA_MOVE_SPEED);
+    }
+
     canvas_clear(&canvas, COLOR_WHITE);
 
     instances[0].transform.rotation.y += 0.01f;

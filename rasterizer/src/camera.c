@@ -37,8 +37,8 @@ matrix4f_t camera_projection_matrix(camera_t* camera) {
 }
 
 matrix4f_t camera_view_matrix(camera_t* camera) {
-  vector3f_t right = vector3f_cross(camera->forward, camera->up);
-  camera->up = vector3f_cross(right, camera->forward);
+  vector3f_t right = vector3f_cross(camera->up, camera->forward);
+  camera->up = vector3f_cross(camera->forward, right);
 
   vector3f_t forward_projected_onto_yz = vector3f_normalize((vector3f_t){
     .x = 0.0f,
@@ -77,4 +77,31 @@ matrix4f_t camera_projection_view_matrix(camera_t* camera) {
   matrix4f_t matrix_view = camera_view_matrix(camera);
 
   return matrix4f_mul(&matrix_projection, &matrix_view);
+}
+
+void camera_rotate(camera_t* camera, float x, float y, float z) {
+  matrix4f_t rotation_matrix = rotation_to_matrix(x, y, z);
+
+  camera->forward =
+    matrix4f_transform_vector3f(&rotation_matrix, camera->forward);
+  camera->up = matrix4f_transform_vector3f(&rotation_matrix, camera->up);
+}
+
+void camera_move_forward(camera_t* camera, float speed) {
+  vector3f_t move_forward = vector3f_scale(camera->forward, speed);
+
+  camera->position = point3f_add(camera->position, move_forward);
+}
+
+void camera_move_up(camera_t* camera, float speed) {
+  vector3f_t move_up = vector3f_scale(camera->up, speed);
+
+  camera->position = point3f_add(camera->position, move_up);
+}
+
+void camera_move_right(camera_t* camera, float speed) {
+  vector3f_t right = vector3f_cross(camera->up, camera->forward);
+  vector3f_t move_right = vector3f_scale(right, speed);
+
+  camera->position = point3f_add(camera->position, move_right);
 }
