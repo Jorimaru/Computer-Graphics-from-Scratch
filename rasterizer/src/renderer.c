@@ -156,7 +156,7 @@ void render_object(canvas_t* canvas,
   point2i_t* projected_vertices =
     (point2i_t*)malloc(sizeof(point2i_t) * num_vertices);
   for (int i = 0; i < num_vertices; i++) {
-    projected_vertices[i] = project_vertex(camera, canvas, vertices[i]);
+    projected_vertices[i] = viewport_to_canvas(camera, canvas, vertices[i]);
   }
   for (int i = 0; i < num_triangles; i++) {
     render_triangle(canvas, &triangles[i], projected_vertices);

@@ -68,6 +68,14 @@ vector3f_t point3f_sub_point3f(point3f_t lhs, point3f_t rhs) {
   };
 }
 
+point3f_t point3f_scale(point3f_t point, float scale) {
+  return (point3f_t){
+    .x = point.x * scale,
+    .y = point.y * scale,
+    .z = point.z * scale,
+  };
+}
+
 float vector3f_length_squared(vector3f_t vector) {
   return vector3f_dot(vector, vector);
 }
@@ -185,7 +193,7 @@ point3f_t matrix4f_transform_point3f(matrix4f_t* matrix, point3f_t point) {
     result.at[x] += matrix->at[x][3];
   }
 
-  return result;
+  return point3f_scale(result, 1.0f / matrix->at[3][3]);
 }
 
 vector3f_t matrix4f_transform_vector3f(matrix4f_t* matrix, vector3f_t vector) {

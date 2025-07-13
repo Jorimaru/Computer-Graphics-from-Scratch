@@ -70,6 +70,7 @@ vector2i_t vector2i_sub(vector2i_t lhs, vector2i_t rhs);
 point3f_t point3f_add(point3f_t lhs, vector3f_t rhs);
 point3f_t point3f_sub(point3f_t lhs, vector3f_t rhs);
 vector3f_t point3f_sub_point3f(point3f_t lhs, point3f_t rhs);
+point3f_t point3f_scale(point3f_t point, float scale);
 
 float vector3f_length_squared(vector3f_t vector);
 float vector3f_length(vector3f_t vector);

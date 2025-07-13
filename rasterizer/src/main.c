@@ -18,6 +18,8 @@
 #define VIEWPORT_WIDTH (VIEWPORT_HEIGHT * ((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT))
 #define VIEWPORT_HEIGHT 1.0f
 
+#define array_length(a) (sizeof(a) / sizeof(a[0]))
+
 int main(void) {
   if (!window_open("Rasterizer", WINDOW_WIDTH, WINDOW_HEIGHT)) {
     return 1;
@@ -55,34 +57,55 @@ int main(void) {
   model_t model = {
     .vertices = vertices,
     .triangles = triangles,
-    .num_vertices = 8,
-    .num_triangles = 12,
+    .num_vertices = array_length(vertices),
+    .num_triangles = array_length(triangles),
   };
 
-  instance_t instance = {
-    .model = &model,
-    .transform = {
-      .translation = { .x = 0.0f, .y = 0.0f, .z = 5.5f },
-      .rotation = { .x = 0.0f, .y = 0.0f, .z = 0.0f },
-      .scale = { .x = 1.0f, .y = 1.0f, .z = 1.0f },
+  instance_t instances[2] = {
+    {
+      .model = &model,
+      .transform = {
+        .translation = { .x = 0.0f, .y = 1.0f, .z = 0.0f },
+        .rotation = { .x = 0.0f, .y = 0.0f, .z = 0.0f },
+        .scale = { .x = 1.0f, .y = 1.0f, .z = 1.0f },
+      },
+    },
+    {
+      .model = &model,
+      .transform = {
+        .translation = { .x = 0.0f, .y = -1.0f, .z = 0.0f },
+        .rotation = { .x = 0.0f, .y = 0.0f, .z = 0.0f },
+        .scale = { .x = 1.0f, .y = 1.0f, .z = 1.0f },
+      },
     },
   };
 
   scene_t scene = {
     .camera = {
-      .width = VIEWPORT_WIDTH,
-      .height = VIEWPORT_HEIGHT,
-      .d = 1.0f,
+      .position = { .x = 0.0f, .y = 0.0f, .z = -5.5f },
+      .forward = VECTOR3F_AXIS_Z,
+      .up = VECTOR3F_AXIS_Y,
+      .viewport_width = VIEWPORT_WIDTH,
+      .viewport_height = VIEWPORT_HEIGHT,
+      .viewport_distance = 1.0f,
     },
-    .instances = &instance,
-    .num_instances = 1,
+    .instances = instances,
+    .num_instances = array_length(instances),
   };
 
   while (!window_is_close_button_pressed()) {
     canvas_clear(&canvas, COLOR_WHITE);
-    instance.transform.rotation.y += 0.01f;
-    instance.transform.rotation.x += 0.02f;
-    instance.transform.translation.x = sinf(instance.transform.rotation.y) * 2;
+
+    instances[0].transform.rotation.y += 0.01f;
+    instances[0].transform.rotation.x += 0.02f;
+    instances[0].transform.translation.x =
+      sinf(instances[0].transform.rotation.y) * 2;
+
+    instances[1].transform.rotation.y -= 0.01f;
+    instances[1].transform.rotation.x -= 0.02f;
+    instances[1].transform.translation.x =
+      sinf(instances[1].transform.rotation.y) * 2;
+
     render_scene(&canvas, &scene);
     window_draw_canvas(&canvas);
   }

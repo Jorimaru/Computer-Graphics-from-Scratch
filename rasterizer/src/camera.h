@@ -4,11 +4,16 @@
 #include "linear_algebra.h"
 
 typedef struct camera {
-  float width;
-  float height;
-  float d;
+  point3f_t position;
+  vector3f_t forward;
+  vector3f_t up;
+  float viewport_width;
+  float viewport_height;
+  float viewport_distance;
 } camera_t;
 
 point2i_t viewport_to_canvas(camera_t* camera, canvas_t* canvas, point3f_t p);
 
-point2i_t project_vertex(camera_t* camera, canvas_t* canvas, point3f_t p);
+matrix4f_t camera_projection_matrix(camera_t* camera);
+matrix4f_t camera_view_matrix(camera_t* camera);
+matrix4f_t camera_projection_view_matrix(camera_t* camera);
