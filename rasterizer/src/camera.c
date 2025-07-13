@@ -1,6 +1,7 @@
 #include "camera.h"
 
 #include <math.h>
+#include <stdlib.h>
 
 #include "transform.h"
 
@@ -9,6 +10,19 @@ point2i_t viewport_to_canvas(camera_t* camera, canvas_t* canvas, point3f_t p) {
     .x = p.x * (canvas->width / camera->viewport_width),
     .y = p.y * (canvas->height / camera->viewport_height),
   };
+}
+
+point2i_t* project_vertices(camera_t* camera,
+                            canvas_t* canvas,
+                            point3f_t* vertices,
+                            int num_vertices) {
+  point2i_t* projected_vertices =
+    (point2i_t*)malloc(sizeof(point2i_t) * num_vertices);
+  for (int i = 0; i < num_vertices; i++) {
+    projected_vertices[i] = viewport_to_canvas(camera, canvas, vertices[i]);
+  }
+
+  return projected_vertices;
 }
 
 matrix4f_t camera_projection_matrix(camera_t* camera) {

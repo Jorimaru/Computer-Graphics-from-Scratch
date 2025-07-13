@@ -2,6 +2,7 @@
 
 #include "color.h"
 #include "linear_algebra.h"
+#include "transform.h"
 
 typedef struct triangle {
   int indices[3];
