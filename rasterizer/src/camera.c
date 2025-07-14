@@ -40,30 +40,14 @@ matrix4f_t camera_view_matrix(camera_t* camera) {
   vector3f_t right = vector3f_cross(camera->up, camera->forward);
   camera->up = vector3f_cross(camera->forward, right);
 
-  vector3f_t forward_projected_onto_yz = vector3f_normalize((vector3f_t){
-    .x = 0.0f,
-    .y = camera->forward.y,
-    .z = camera->forward.z,
-  });
-  vector3f_t forward_projected_onto_xz = vector3f_normalize((vector3f_t){
-    .x = camera->forward.x,
-    .y = 0.0f,
-    .z = camera->forward.z,
-  });
-  vector3f_t up_projected_onto_xy = vector3f_normalize((vector3f_t){
-    .x = camera->up.x,
-    .y = camera->up.y,
-    .z = 0.0f,
-  });
-
-  float rotation_x = (forward_projected_onto_yz.y < 0.0f ? -1.0f : 1.0f) *
-    acosf(vector3f_dot(VECTOR3F_AXIS_Z, forward_projected_onto_yz));
-  float rotation_y = (forward_projected_onto_xz.x < 0.0f ? 1.0f : -1.0f) *
-    acosf(vector3f_dot(VECTOR3F_AXIS_Z, forward_projected_onto_xz));
-  float rotation_z = (up_projected_onto_xy.x < 0.0f ? 1.0f : -1.0f) *
-    acosf(vector3f_dot(VECTOR3F_AXIS_Y, up_projected_onto_xy));
-  matrix4f_t matrix_rotation =
-    rotation_to_matrix(rotation_x, rotation_y, rotation_z);
+  matrix4f_t matrix_rotation = {
+    .elems = {
+      right.x, right.y, right.z, 0.0f,
+      camera->up.x, camera->up.y, camera->up.z, 0.0f,
+      camera->forward.x, camera->forward.y, camera->forward.z, 0.0f,
+      0.0f, 0.0f, 0.0f, 1.0f,
+    },
+  };
 
   matrix4f_t matrix_translation = translation_to_matrix(
     -camera->position.x,
