@@ -67,6 +67,9 @@ vector2i_t vector2i_invert(vector2i_t vector);
 vector2i_t vector2i_add(vector2i_t lhs, vector2i_t rhs);
 vector2i_t vector2i_sub(vector2i_t lhs, vector2i_t rhs);
 
+vector3f_t point3f_to_vector3f(point3f_t point);
+float point3f_distance_squared(point3f_t lhs, point3f_t rhs);
+float point3f_distance(point3f_t lhs, point3f_t rhs);
 point3f_t point3f_add(point3f_t lhs, vector3f_t rhs);
 point3f_t point3f_sub(point3f_t lhs, vector3f_t rhs);
 vector3f_t point3f_sub_point3f(point3f_t lhs, point3f_t rhs);

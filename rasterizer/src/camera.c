@@ -12,6 +12,16 @@ point2i_t viewport_to_canvas(camera_t* camera, canvas_t* canvas, point3f_t p) {
   };
 }
 
+static point2i_t project_vertex(camera_t* camera,
+                                canvas_t* canvas,
+                                point3f_t p) {
+  return viewport_to_canvas(camera, canvas, (point3f_t){
+    .x = p.x / p.z,
+    .y = p.y / p.z,
+    .z = camera->viewport_distance,
+  });
+}
+
 point2i_t* project_vertices(camera_t* camera,
                             canvas_t* canvas,
                             point3f_t* vertices,
@@ -19,7 +29,7 @@ point2i_t* project_vertices(camera_t* camera,
   point2i_t* projected_vertices =
     (point2i_t*)malloc(sizeof(point2i_t) * num_vertices);
   for (int i = 0; i < num_vertices; i++) {
-    projected_vertices[i] = viewport_to_canvas(camera, canvas, vertices[i]);
+    projected_vertices[i] = project_vertex(camera, canvas, vertices[i]);
   }
 
   return projected_vertices;

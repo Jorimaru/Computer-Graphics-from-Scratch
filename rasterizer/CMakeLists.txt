@@ -1,6 +1,7 @@
 add_executable(rasterizer
   src/camera.c
   src/canvas.c
+  src/clipping.c
   src/color.c
   src/image.c
   src/linear_algebra.c

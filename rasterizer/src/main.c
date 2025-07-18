@@ -96,7 +96,7 @@ int main(void) {
     .instances = instances,
     .num_instances = array_length(instances),
   };
-
+  
   while (!window_is_close_button_pressed()) {
     camera_rotate(
       &scene.camera,

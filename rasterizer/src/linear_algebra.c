@@ -44,6 +44,22 @@ vector2i_t vector2i_sub(vector2i_t lhs, vector2i_t rhs) {
   };
 }
 
+vector3f_t point3f_to_vector3f(point3f_t point) {
+  return (vector3f_t){
+    .x = point.x,
+    .y = point.y,
+    .z = point.z,
+  };
+}
+
+float point3f_distance_squared(point3f_t lhs, point3f_t rhs) {
+  return vector3f_length_squared(point3f_sub_point3f(lhs, rhs));
+}
+
+float point3f_distance(point3f_t lhs, point3f_t rhs) {
+  return sqrtf(point3f_distance_squared(lhs, rhs));
+}
+
 point3f_t point3f_add(point3f_t lhs, vector3f_t rhs) {
   return (point3f_t){
     .x = lhs.x + rhs.x,
